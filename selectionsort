@@ -1,0 +1,38 @@
+import retornalistas
+import numpy as np
+
+desordenado = retornalistas.retornalista('reverse')
+ades = np.array(desordenado)
+print (ades)
+
+def selectionsort (ades):
+    pos1 = 0
+    starter = 1
+
+    for item in ades:
+        min = item
+        print ('item',item)
+        n = (ades.size)+1
+    
+        for i in ades[starter:n:1]:
+            if (i < min):
+                min = i
+                pos1 = ades.tolist().index(i)
+                print ('o minimo agora eh:',min)
+        if (min == item):
+            print ('e igual!')
+    
+        if (min != item):
+            aux = item
+            pos2 = ades.tolist().index(item)
+            ades[pos2]= min
+            ades[pos1] = aux
+            print (ades)
+        starter +=1
+        
+    print(ades)
+    return ades
+
+
+ordenado = selectionsort(ades)
+print(ordenado)
