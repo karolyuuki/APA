@@ -1,0 +1,17 @@
+import retornalistas
+
+def insertionSort(ades):
+   for index in range(1,len(ades)):
+
+     currentvalue = ades[index]
+     item = index
+    #ades[item-1] eh o item da fila de ordenados com quem se compara
+     while item>0 and ades[item-1]>currentvalue:
+         ades[item]=ades[item-1]
+         item = item-1
+
+     ades[item]= currentvalue
+
+ades = retornalistas.retornalista('reverse')
+insertionSort(ades)
+print(ades)
