@@ -1,0 +1,25 @@
+
+def retornalista(nome):
+    if (nome == 'basic'):
+        lista = [3,2,4,6,8,15]
+        return lista
+    
+    if (nome == 'natural'):
+        lista = [3,5,9,2,6,3,7,8,10,20,15,1,4,19,2,7,11]
+        return lista
+
+    if (nome == 'order'):
+        lista = [1,2,3,4,5,6,7]
+        return lista
+
+    if (nome == 'reverse'):
+        lista = [9,8,7,6,5,4,3]
+        return lista
+
+    if (nome == 'same'):
+        lista = [7,7,7,7,7,7,7]
+        return lista
+
+    if (nome == 'long'):
+        lista = [3,45,7,24,56,10,12,8,67,30,4,5,100,27]
+        return lista
