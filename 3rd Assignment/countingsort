@@ -1,0 +1,26 @@
+import numpy as np
+import retornalistas
+
+def countingsort(arini, k, n):
+    
+    arfin = np.zeros(n, dtype=object) 
+    c = np.zeros(k+1, dtype=object)
+
+    for a in arini:
+        c[a] += 1
+    print('C', c)
+    
+    for i in range(1,k+1):
+        c[i] = c[i]+ c[i-1]
+
+    for i in range((n-1),-1,-1):
+        arfin[c[arini[i]]-1] = arini[i]
+        c[arini[i]] = c[arini[i]]-1
+    return (arfin)
+
+
+ades = retornalistas.retornalista('natural')
+n = len(ades)
+B = countingsort(ades, 20, n)
+print ('A', ades)
+print ('B', B)
