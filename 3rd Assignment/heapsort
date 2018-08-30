@@ -2,22 +2,22 @@ import retornalistas
 import numpy as np
 
 
-listaa = [3,2,15,6,8,4]
+listaa = retornalistas.retornalista('natural')
 
 def swap(lista, i, j):
     lista[i], lista[j] = lista[j], lista[i]
 
 
 def buildmaxheap(lista,n):
-    for i in range(((n+1)/2),0,-1):
+    for i in range((n/2),-1,-1):
         Heapify(lista, i, n)
 
 def Heapify(lista, i, n):
-    esq = (2*i)
-    dire = (2*i)+1
+    esq = (2*i)+1
+    dire = (2*i)+2
     maximo = i
 
-    if (esq <= n) and (lista[esq] > lista[i]):
+    if (esq <= n) and (lista[esq] > lista[maximo]):
         maximo = esq
                        
     if (dire <= n ) and (lista[dire] > lista [maximo]):
