@@ -1,0 +1,41 @@
+import retornalistas
+import numpy as np
+
+
+listaa = [3,2,15,6,8,4]
+
+def swap(lista, i, j):
+    lista[i], lista[j] = lista[j], lista[i]
+
+
+def buildmaxheap(lista,n):
+    for i in range(((n+1)/2),0,-1):
+        Heapify(lista, i, n)
+
+def Heapify(lista, i, n):
+    esq = (2*i)
+    dire = (2*i)+1
+    maximo = i
+
+    if (esq <= n) and (lista[esq] > lista[i]):
+        maximo = esq
+                       
+    if (dire <= n ) and (lista[dire] > lista [maximo]):
+        maximo = dire
+
+    if (maximo!= i):
+        swap (lista, i, maximo)
+        if (i>=0) and (esq>=0) and (dire>=0):
+            Heapify(lista, maximo, n)
+
+def heapsort(lista):
+    n = (len(lista)-1)
+    buildmaxheap(lista,n)
+    for i in range(n,0,-1):
+        swap(lista, 0, i)
+        n = n-1
+        Heapify(lista, 0, n)
+    return lista
+
+a = heapsort(listaa)
+
