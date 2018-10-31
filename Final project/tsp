@@ -1,0 +1,62 @@
+import numpy as np
+import math
+import random
+import sys
+
+def readconvert (filename, ordem):
+        filex= open(filename,'r')
+        list_items = filex.readlines()
+	
+        for item in list_items:
+                value = item.split(' ')
+                ordem.append(value)
+        grafo=ordem[10:]
+        a = len(ordem)-10
+
+        adjacencia = np.zeros((a,a))
+        #print (adjacencia)
+        #print('a',ordem[10][1])
+        for i in range(0,a):
+                for j in range (0,a):
+                        adjacencia[i][j]= math.sqrt(((float(grafo[i][1])-float(grafo[j][1]))**2)+(float(grafo[i][2])-float(grafo[j][2]))**2)
+        #print(adjacencia)
+        return adjacencia, a
+
+def nearestneigbor(adjacencia, size):
+        solucao= list()
+        inicial = random.randint(0,size)
+        solucao.append(inicial)
+        print solucao
+
+        for j in range (0,size-1):
+                distancia = sys.maxint
+
+                for i in range(0,size):
+                        if ((adjacencia[inicial][i]<=distancia)and (i not in solucao)):
+                                proximo = i
+                                distancia = adjacencia[inicial][i]
+                                print(proximo,distancia)
+
+                solucao.append(proximo)
+                inicial = proximo
+                print solucao
+        return solucao                
+
+def calculacaminho(solucao, adjacencia):
+        total = 0
+        for i in range(0,len(solucao)-1):
+                total = total + adjacencia[solucao[i]][solucao[i+1]]
+                print(total)
+        print(total)
+
+def swap(solucao, adjacencia):
+
+        for i in solucao:
+                
+
+#Main
+
+ordem = list()
+grafo, size = readconvert("djibouti.txt",ordem)
+solucao = nearestneigbor(grafo,size)
+valorcaminho = calculacaminho(solucao, grafo) 
