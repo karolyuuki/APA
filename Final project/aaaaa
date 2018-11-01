@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdbool.h>
+#include <time.h>
 
 #define INT_MAX 200000;
 
@@ -23,13 +24,15 @@ void swap(float m[][nElementos], int* solucao_inicial, int* melhor_vizinho);
 void twoOpt(float m[][nElementos], int* solucao_inicial, float melhor_custo, int* melhor_vizinho);
 void twoOptSwap(int* entrada, int i, int k, int* saida);
 void VND(float m[][nElementos], float custo_melhor_vizinho, int* melhor_vizinho, int* otimo_local);
-void GRASP(float m[][nElementos], int* solucao_inicial, int* solucao_final, int alfa);
-void gerarLCR(int* entrada, int a, int* saida);
+void GRASP(float m[][nElementos], int* solucao_inicial, int* solucao_final, float alfa);
+void gerarLCR(int* entrada, int a, int* saida,float m[][nElementos]);
 bool isvalueinarray(int val, int *arr, int size);
 
 int main(void) {
     int t;
-    int alfa = 2;
+    float alfa = 0.5;
+    time_t w;
+    srand((unsigned) time(&w));
 
     //FILE* fp = fopen("dijbouti.txt", "r");
     //FILE* fp = fopen("bcl380.txt", "r");
@@ -85,7 +88,7 @@ int main(void) {
     return 0;
 }
 
-void GRASP(float m[][nElementos], int* solucao_inicial, int* solucao_final, int alfa){
+void GRASP(float m[][nElementos], int* solucao_inicial, int* solucao_final, float alfa){
     int improve = 0;
     int solucao_temp[nElementos];
     int otimo_local[nElementos];
@@ -95,8 +98,9 @@ void GRASP(float m[][nElementos], int* solucao_inicial, int* solucao_final, int 
         copiaCaminho(solucao_temp, solucao_inicial);
         
         construcaoGulosa(m, solucao_temp);
+        
         //pegar x candidatos da lista gulosa e o resto aleatorio;
-        gerarLCR(solucao_temp, alfa, solucao_temp);
+        gerarLCR(solucao_temp, alfa, solucao_temp,m);
         
         custoGuloso = calculaCusto(m, solucao_temp);
         printf("LCR: ");
@@ -126,7 +130,7 @@ void GRASP(float m[][nElementos], int* solucao_inicial, int* solucao_final, int 
     printf("Custo solução após VDN: %.2f\n", custoFinal);
 }
 
-void gerarLCR(int* entrada, int a, int* saida){
+void gerarLCR(int* entrada, int a, int* saida,float m[][nElementos]){
     int k =  nElementos * a;
     int inseridos[nElementos];
     int count = 0;
@@ -135,27 +139,27 @@ void gerarLCR(int* entrada, int a, int* saida){
     for(int i = 0; i < nElementos; i++){
       inseridos[i] = 0;
     }
-        //o primeiro elemento sera o msm da construcao gulosa
-    saida[0]=entrada[0];
+    saida[0] = entrada[0];
 
     //randomiza os elementos de k ao fim;
     for(int i = 1 ; i < nElementos; i++){
         
-        //pega os elementos gerados pelo guloso e seleciona só os 
-        //menores q alfa
+        construcaoGulosa(m, entrada);
+        k = nElementos-i;
         for(int i = 0; i < k; ++i){
           LCR[i] = entrada[i];
         }
 
         int n = rand() % k; 
-        
-        if(n >= k && !inseridos[n]){
-            saida[i] = entrada[n];
+        bool inserido = isvalueinarray(n, saida, nElementos);
+        if(inserido==false){
+            saida[i] = LCR[n];
             inseridos[n] = 1;
             count++;
         }
     }
 }
+
 void construcaoGulosa(float m[][nElementos], int* solucao_inicial) {
     int *inseridos = malloc(nElementos * sizeof(int));
 
@@ -163,7 +167,7 @@ void construcaoGulosa(float m[][nElementos], int* solucao_inicial) {
         inseridos[i] = 0;
     }
 
-    solucao_inicial[0] = 0;
+    solucao_inicial[0] = rand() % (nElementos-1);
     inseridos[0] = 1;
 
     for(int i = 0; i < nElementos; i++) {
@@ -173,7 +177,7 @@ void construcaoGulosa(float m[][nElementos], int* solucao_inicial) {
         for(int j = 0; j < nElementos; j++) {
             bool inserido = isvalueinarray(j, solucao_inicial, nElementos);
             if((inserido==false) && (valor_referencia > m[i][j])) {
-                printf("entrou aqui, %d",j);
+                //printf("entrou aqui, %d",j);
                 vizinho_selecionado = j;
                 valor_referencia = m[i][j];
                 solucao_inicial[i + 1] = vizinho_selecionado;
@@ -183,7 +187,7 @@ void construcaoGulosa(float m[][nElementos], int* solucao_inicial) {
 
     }
 
-    solucao_inicial[nElementos] = 0;
+    solucao_inicial[nElementos] = solucao_inicial[0];
 
     free(inseridos);
 }
